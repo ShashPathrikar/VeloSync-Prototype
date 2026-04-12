@@ -77,10 +77,11 @@ const ServiceRow = ({ service, index }) => {
           style={{ x: headingX }}
           className="font-['FoundersGrotesk'] uppercase text-[12vw] md:text-[7vw] leading-none text-zinc-900"
         >
-          Services
+          Our Products
         </motion.h1>
         <p className="font-['NeueMontrealLight'] font-semibold text-black text-[3.5vw] md:text-[1.1vw] max-w-full md:max-w-[30vw] md:text-right leading-relaxed">
-          Everything you need to build, ship, and scale — under one roof.
+          Four products replacing Jira, Confluence, Contentful, and Salesforce — all
+          deployed and ready for your team today.
         </p>
       </div>
 
@@ -94,10 +95,10 @@ const ServiceRow = ({ service, index }) => {
       {/* Bottom CTA */}
       <div className="px-5 md:px-[3.922vw] pt-12 md:pt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <p className="font-['NeueMontrealLight'] font-semibold text-black text-[3.5vw] md:text-[1.1vw]">
-          Ready to move faster?
+          Ready to get VeloSynq set up for your team?
         </p>
         <button className="flex items-center gap-4 px-6 md:px-8 py-3 md:py-4 bg-[#004d43] border border-[#004d43] rounded-full text-white font-['NeueMontrealLight'] text-[3.5vw] md:text-[1.1vw] hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300">
-          <span>Start a project</span>
+          <span>Get in Touch</span>
           <span className="w-2 h-2 rounded-full bg-current" />
         </button>
       </div>

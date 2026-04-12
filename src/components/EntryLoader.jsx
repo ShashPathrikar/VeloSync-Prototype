@@ -11,7 +11,7 @@ const EntryLoader = ({ onComplete }) => {
   const startRef = useRef(null);
   const { content } = useContent();
   const { navigateTo } = usePageTransition();
-  const subtexts = (content && content.landing && content.landing.subtexts) || ["For startups to enterprises", "From MVP to market leadership"];
+  const subtexts = (content && content.landing && content.landing.subtexts) || ["Jira · Confluence · CRM · Contentful — done right", "Built for small businesses. Priced for real budgets."];
 
   // Phase 1: Slide card up from bottom
   useEffect(() => {
@@ -167,7 +167,7 @@ const EntryLoader = ({ onComplete }) => {
                   className="leading-none -mt-[7vw] -mb-[3.5vw] shrink-0 pr-[4vw]"
                   aria-hidden={i > 0 ? "true" : undefined}
                 >
-                  {(content && content.landing && content.landing.marquee) || 'We are Velosync'}
+                  {(content && content.landing && content.landing.marquee) || 'VeloSynq • Affordable SaaS for Small Business •'}
                 </h1>
               ))}
             </div>
@@ -183,9 +183,8 @@ const EntryLoader = ({ onComplete }) => {
           </div>
           <div className="px-5">
             <p className="text-[7vw] leading-tight w-full text-zinc-900">
-              VeloSynq is the all-in-one platform designed to accelerate product velocity
-              and synchronize teams across development, marketing, and sales. We help
-          ambitious companies ship faster and scale smarter.
+              VeloSynq gives small businesses the same enterprise-grade software that Fortune 500 companies use —
+              at a fraction of the price. Jira, Confluence, CRM, and Contentful alternatives, all in one platform.
             </p>
           </div>
         </div>

@@ -21,7 +21,6 @@ const LandingPage = () => {
         // ignore
       }
 
-      // Refresh locomotive calculations if available
       try {
         if (window.locomotiveScroll && typeof window.locomotiveScroll.update === 'function') {
           window.locomotiveScroll.update();
@@ -37,12 +36,11 @@ const LandingPage = () => {
 
   const headlines = (content && content.landing && Array.isArray(content.landing.headlines) && content.landing.headlines.length)
     ? content.landing.headlines
-    : ["We Build", "Game-Changing", "Software"];
+    : ["Enterprise Tools", "Small Business", "Prices"];
   const subtexts = (content && content.landing && Array.isArray(content.landing.subtexts) && content.landing.subtexts.length)
     ? content.landing.subtexts
-    : ["For startups to enterprises", "From MVP to market leadership"];
+    : ["Jira · Confluence · CRM · Contentful — done right", "Built for small businesses. Priced for real budgets."];
 
-  // Use landingBgColor from content, fallback to global backgroundColor or white
   const landingBgColor = (content && content.landingBgColor) || (content && content.backgroundColor) || '#fff';
   return (
     <div
@@ -59,7 +57,7 @@ const LandingPage = () => {
               {index === 1 && (
                 <span
                   className="w-[11vw] md:w-[9vw] h-[8vw] md:h-[7.5vw] rounded-md mr-2 relative"
-                  style={{ backgroundColor: (content && content.landingBgColor) || (content && content.primaryColor) || '#004d43' }}
+                  style={{ backgroundColor: (content && content.primaryColor) || '#004d43' }}
                 />
               )}
               <h1 className="font-['FoundersGrotesk'] leading-[12vw] md:leading-[9.5vw] uppercase text-[12vw] md:text-[11.5vw] flex items-center text-zinc-900">
@@ -79,17 +77,16 @@ const LandingPage = () => {
         </div>
         <div className="w-full md:w-1/3 text-right hidden md:flex md:justify-end">
           <button
-            aria-label="Start building — contact us"
+            aria-label="Request a demo"
             onClick={() => {
               try { navigateTo('/contact'); } catch (e) { window.location.href = '/contact'; }
             }}
             className="tracking-tight text-[3.5vw] md:text-[1.05vw] leading-tight rounded-full px-5 py-2 md:py-[0.35rem] uppercase font-extralight text-white hover:bg-zinc-900 hover:border-zinc-900 transition-all duration-300"
-            style={{ backgroundColor: (content && content.landingBgColor) || (content && content.primaryColor) || '#004d43', borderColor: (content && content.landingBgColor) || (content && content.primaryColor) || '#004d43' }}
+            style={{ backgroundColor: (content && content.primaryColor) || '#004d43', borderColor: (content && content.primaryColor) || '#004d43' }}
           >
-            Start building
+            Request a Demo
           </button>
         </div>
-        {/* mobile CTA removed per request */}
       </div>
     </div>
   );

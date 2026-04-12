@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const TRANSITION_PAGES = ["/services", "/careers", "/contact"];
 const EXIT_MS = 1100;
-const pageNames = { "/": "VeloSync", "/services": "Services", "/careers": "Careers", "/contact": "Contact" };
+const pageNames = { "/": "VeloSynq", "/services": "Products", "/careers": "Careers", "/contact": "Contact" };
 
 const TransitionCtx = createContext({ navigateTo: () => {}, directNavigate: () => {}, transitioning: false });
 export const usePageTransition = () => useContext(TransitionCtx);
