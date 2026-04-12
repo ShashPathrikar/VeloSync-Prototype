@@ -9,10 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 // Site palette: white | dark green #004d43 | zinc-900 text
 
 const PROJECTS = [
-  { name: "DocSync",    tags: ["Real-time Editing", "Version History", "Team Wikis"] },
-  { name: "TaskVault",  tags: ["Sprint Planning", "Kanban Board", "Backlog"] },
-  { name: "ContentHub", tags: ["Headless CMS", "Media Library", "Multi-channel"] },
-  { name: "QAFlow",     tags: ["Test Automation", "Bug Tracking", "CI/CD"] },
+  { name: "DocSynq",      tags: ["Real-time Editing", "Version History", "Team Wikis"] },
+  { name: "SprintSynq",   tags: ["Sprint Planning", "Kanban Board", "Backlog"] },
+  { name: "ContentSynq",  tags: ["Headless CMS", "Media Library", "Multi-channel"] },
+  { name: "ClientSynq",   tags: ["Lead Tracking", "Deal Pipeline", "CRM"] },
 ];
 
 const Featured = () => {
@@ -265,14 +265,15 @@ const Featured = () => {
       <div className="w-full px-5 md:px-[3.922vw] py-8 md:py-12 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-200">
         <div>
           <p className="font-['NeueMontrealLight'] text-[3vw] md:text-[1vw] uppercase tracking-widest mb-3" style={{ color: "#004d43" }}>
-            / Our Work
+            / Our Products
           </p>
           <h1 className="font-['FoundersGrotesk'] text-[10vw] md:text-[6vw] uppercase leading-none text-black">
-            Featured Projects
+            The Full Suite
           </h1>
         </div>
-        <p className="font-['NeueMontrealLight'] text-[3.5vw] md:text-[1vw] text-zinc-500 max-w-full md:max-w-[24vw] md:text-right leading-relaxed">
-          Four tools built to power every layer of the modern product team.
+        <p className="font-['NeueMontrealLight'] text-[3.5vw] md:text-[1vw] text-zinc-500 max-w-full md:max-w-[28vw] md:text-right leading-relaxed">
+          Four products. One platform. Get VeloSynq set up for your team and replace
+          Jira, Confluence, Contentful, and Salesforce — at a fraction of the cost.
         </p>
       </div>
 

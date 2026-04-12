@@ -68,7 +68,7 @@ const Team = () => {
               transition={{ duration: 0.8, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
               className="font-['FoundersGrotesk'] uppercase text-[12vw] md:text-[7vw] leading-none text-white "
             >
-              Contributors
+              Founders
             </motion.h1>
           </div>
         </div>
@@ -79,7 +79,7 @@ const Team = () => {
           transition={{ duration: 0.7, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}
           className="font-['NeueMontrealLight'] text-[3.5vw] md:text-[1.1vw] max-w-full md:max-w-[37vw] leading-relaxed md:text-right text-white/70"
         >
-          Built by passionate contributors. Want to be part of VeloSynq? <a href="mailto:contact@velosynq.com" className="underline underline-offset-4 text-white hover:opacity-80 transition-opacity">Contact us to contribute.</a>
+          Built by Harikrishna &amp; Nihal with a mission to make enterprise software affordable for every small business. Want to join us? <a href="mailto:hello@velosynq.io" className="underline underline-offset-4 text-white hover:opacity-80 transition-opacity">Get in touch.</a>
         </motion.p>
       </div>
 
@@ -139,14 +139,16 @@ const Team = () => {
       >
         <div>
           <h3 className="font-['FoundersGrotesk'] uppercase text-[6vw] md:text-[3vw] leading-none text-white mb-2">
-            Become a Contributor
+            Join the Team
           </h3>
           <p className="font-['NeueMontrealLight'] text-[3.5vw] md:text-[1.1vw] leading-relaxed" style={{ color: "#a8d5cf" }}>
-            Passionate about what we're building? Reach out and join the team.
+            VeloSynq powers small businesses with enterprise-grade tools at a fraction of
+            the cost. Join us in expanding access to professional software — engineers,
+            designers, and growth folks welcome.
           </p>
         </div>
         <a
-          href="mailto:contact@velosynq.com"
+          href="mailto:hello@velosynq.io"
           className="shrink-0 px-8 py-3 font-['NeueMontrealLight'] text-sm rounded-full transition-all duration-300"
           style={{ border: "1px solid white", color: "white" }}
           onMouseEnter={e => { e.currentTarget.style.backgroundColor = "white"; e.currentTarget.style.color = "#004d43"; }}

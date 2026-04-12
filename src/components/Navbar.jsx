@@ -87,7 +87,7 @@ const Navbar = () => {
                 className="text-[7vw] md:text-[2.5vw] lg:text-[1.8vw] font-light capitalize cursor-pointer"
                 onClick={() => { setMenuOpen(false); directNavigate("/", { state: { skipEntryLoader: true } }); }}
           >
-            VeloSync
+            VeloSynq
           </h3>
         </div>
 
