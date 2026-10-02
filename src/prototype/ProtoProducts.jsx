@@ -49,7 +49,9 @@ const products = [
   },
 ];
 
-// Single 3D flip card
+// The card height as a CSS value — defined once so both faces match exactly
+const CARD_H = 380;
+
 const FlipCard = ({ product, index, onOpenDemo }) => {
   const [flipped, setFlipped] = useState(false);
 
@@ -59,107 +61,213 @@ const FlipCard = ({ product, index, onOpenDemo }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.9, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-      // Container — perspective for 3D space
-      style={{ perspective: "1200px" }}
+      // Outer wrapper provides the 3D perspective
+      style={{ perspective: "1400px", height: CARD_H }}
       className="relative w-full"
     >
-      {/* Flip inner — this rotates */}
+      {/* Inner wrapper — this is the element that actually rotates */}
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{ transformStyle: "preserve-3d" }}
-        className="relative w-full"
-        style={{ transformStyle: "preserve-3d", height: "360px" }}
+        transition={{ duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          transformStyle: "preserve-3d",  // ← only one style prop, no conflict
+        }}
       >
         {/* ── FRONT FACE ── */}
         <div
-          className="absolute inset-0 rounded-3xl border flex flex-col justify-between p-8 cursor-pointer"
+          onClick={() => setFlipped(true)}
           style={{
+            position: "absolute",
+            inset: 0,
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
             backgroundColor: "#FFF8EC",
-            borderColor: "#DCCCAC",
+            borderRadius: "1.5rem",
+            border: "1px solid #DCCCAC",
+            padding: "2rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            boxShadow: "0 4px 24px rgba(84,107,65,0.06)",
           }}
-          onClick={() => setFlipped(true)}
         >
-          {/* Top row */}
-          <div className="flex items-start justify-between">
+          {/* Top */}
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: "#DCCCAC", color: "#2C2C2C" }}
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: "1rem",
+                backgroundColor: "#DCCCAC",
+                color: "#2C2C2C",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               {product.icon}
             </div>
-            <span className="font-['FoundersGrotesk'] text-5xl" style={{ color: "rgba(84,107,65,0.12)" }}>
+            <span
+              style={{
+                fontFamily: "FoundersGrotesk",
+                fontSize: "3rem",
+                color: "rgba(84,107,65,0.1)",
+                lineHeight: 1,
+              }}
+            >
               {product.number}
             </span>
           </div>
 
           {/* Bottom */}
           <div>
-            <span className="text-xs font-semibold uppercase tracking-widest block mb-2" style={{ color: "#99AD7A" }}>
+            <span
+              style={{
+                display: "block",
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: "#99AD7A",
+                marginBottom: "0.5rem",
+              }}
+            >
               {product.competitor}
             </span>
             <h3
-              className="font-['FoundersGrotesk'] text-5xl uppercase leading-none mb-2"
-              style={{ color: "#2C2C2C" }}
+              style={{
+                fontFamily: "FoundersGrotesk",
+                fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
+                textTransform: "uppercase",
+                lineHeight: 0.9,
+                color: "#2C2C2C",
+                marginBottom: "0.4rem",
+              }}
             >
               {product.title}
             </h3>
-            <p className="text-sm" style={{ color: "#546B41", opacity: 0.7 }}>
+            <p style={{ fontSize: "0.85rem", color: "#546B41", opacity: 0.7 }}>
               {product.category}
             </p>
           </div>
 
-          {/* Tap hint */}
-          <div className="absolute bottom-6 right-8 text-xs font-semibold uppercase tracking-widest" style={{ color: "#DCCCAC" }}>
-            Hover to flip →
-          </div>
+          {/* Hint */}
+          <span
+            style={{
+              position: "absolute",
+              bottom: "1.5rem",
+              right: "2rem",
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#DCCCAC",
+            }}
+          >
+            Click to flip →
+          </span>
         </div>
 
         {/* ── BACK FACE ── */}
         <div
-          className="absolute inset-0 rounded-3xl border flex flex-col justify-between p-8"
+          onClick={() => setFlipped(false)}
           style={{
+            position: "absolute",
+            inset: 0,
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
+            transform: "rotateY(180deg)",   // pre-rotated so it starts hidden
             backgroundColor: "#546B41",
-            borderColor: "#546B41",
+            borderRadius: "1.5rem",
+            border: "1px solid #546B41",
+            padding: "2rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            boxShadow: "0 4px 24px rgba(84,107,65,0.2)",
           }}
-          onClick={() => setFlipped(false)}
         >
           <div>
             <h3
-              className="font-['FoundersGrotesk'] text-4xl uppercase leading-none mb-4"
-              style={{ color: "#FFF8EC" }}
+              style={{
+                fontFamily: "FoundersGrotesk",
+                fontSize: "clamp(2rem, 4vw, 2.75rem)",
+                textTransform: "uppercase",
+                lineHeight: 0.95,
+                color: "#FFF8EC",
+                marginBottom: "1rem",
+              }}
             >
               {product.title}
             </h3>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: "#DCCCAC", opacity: 0.9 }}>
+            <p
+              style={{
+                fontSize: "0.875rem",
+                lineHeight: 1.65,
+                color: "#DCCCAC",
+                opacity: 0.9,
+                marginBottom: "1.5rem",
+              }}
+            >
               {product.description}
             </p>
-            <ul className="grid grid-cols-2 gap-2">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "0.5rem 0.75rem",
+              }}
+            >
               {product.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-xs font-medium" style={{ color: "#FFF8EC", opacity: 0.8 }}>
-                  <span style={{ color: "#99AD7A" }}>→</span>
+                <div
+                  key={f}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "0.4rem",
+                    fontSize: "0.75rem",
+                    color: "rgba(255,248,236,0.8)",
+                    fontWeight: 500,
+                  }}
+                >
+                  <span style={{ color: "#99AD7A", flexShrink: 0 }}>→</span>
                   {f}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
-          <div className="flex items-center justify-between mt-4">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.5rem" }}>
             <button
               onClick={(e) => { e.stopPropagation(); onOpenDemo(); }}
-              className="flex items-center gap-2 text-sm font-bold hover:opacity-80 transition-opacity"
-              style={{ color: "#FFF8EC" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                fontSize: "0.875rem",
+                fontWeight: 700,
+                color: "#FFF8EC",
+                background: "none",
+                border: "none",
+                padding: 0,
+                opacity: 0.9,
+              }}
             >
-              <span>Request Access</span>
-              <FiArrowRight />
+              Request Access <FiArrowRight />
             </button>
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#99AD7A" }}>
-              ← Flip back
+            <span
+              style={{
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: "#99AD7A",
+              }}
+            >
+              ← flip back
             </span>
           </div>
         </div>
@@ -198,12 +306,12 @@ const ProtoProducts = ({ onOpenDemo }) => {
             className="text-sm max-w-xs border-l-2 pl-5 hidden md:block"
             style={{ color: "#546B41", borderColor: "#DCCCAC", opacity: 0.9 }}
           >
-            Hover any card to flip it and see what's inside.
+            Click any card to flip it and see what's inside.
           </p>
         </motion.div>
 
         {/* 2×2 flip card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6" style={{ perspective: "2000px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {products.map((p, i) => (
             <FlipCard key={p.id} product={p} index={i} onOpenDemo={onOpenDemo} />
           ))}
