@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProtoSEO from "./ProtoSEO";
 import ProtoNavbar from "./ProtoNavbar";
 import ProtoHero from "./ProtoHero";
@@ -17,14 +17,26 @@ import CursorSpotlight from "./CursorSpotlight";
 const PrototypePage = () => {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
 
+  // Hide the browser scrollbar while on this page, restore on leave
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.id = "proto-no-scrollbar";
+    style.textContent = `
+      html::-webkit-scrollbar { display: none !important; }
+      html { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.getElementById("proto-no-scrollbar")?.remove();
+    };
+  }, []);
+
   return (
     <div
       className="proto-cursor-wrap w-full min-h-[100dvh] font-['NeueMontreal'] overflow-x-hidden selection:bg-[#546B41] selection:text-[#FFF8EC]"
       style={{ backgroundColor: "#FFF8EC", color: "#2C2C2C" }}
     >
-      {/* Global cursor spotlight */}
       <CursorSpotlight />
-
       <ProtoSEO />
       <ProtoNavbar onOpenDemo={() => setDemoModalOpen(true)} />
       <main>
