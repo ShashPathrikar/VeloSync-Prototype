@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
+import { ParallaxBlob } from "./ParallaxUtils";
 
 const ProtoAbout = ({ onOpenDemo }) => {
   const stats = [
@@ -11,8 +12,10 @@ const ProtoAbout = ({ onOpenDemo }) => {
   ];
 
   return (
-    <section id="about" className="relative py-24 md:py-32" style={{ backgroundColor: "#FFF8EC" }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
+    <section id="about" className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: "#FFF8EC" }}>
+      <ParallaxBlob color="#546B41" size={350} top="0" right="-60px" speed={0.3} opacity={0.08} blur={80} shape="organic" />
+      <ParallaxBlob color="#99AD7A" size={280} bottom="-60px" left="-40px" speed={0.2} opacity={0.12} blur={70} shape="oval" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         <div className="mb-8 flex items-center gap-3">
           <div className="w-6 h-px" style={{ backgroundColor: "#546B41" }} />
           <span className="font-semibold text-sm tracking-widest uppercase" style={{ color: "#546B41" }}>

@@ -9,19 +9,22 @@ import ProtoInteractiveDiagram from "./ProtoInteractiveDiagram";
 import ProtoProducts from "./ProtoProducts";
 import ProtoServices from "./ProtoServices";
 import ProtoEnterprise from "./ProtoEnterprise";
-import ProtoRoiCalc from "./ProtoRoiCalc";
 import ProtoCulture from "./ProtoCulture";
 import ProtoDemoModal from "./ProtoDemoModal";
 import ProtoFooter from "./ProtoFooter";
+import CursorSpotlight from "./CursorSpotlight";
 
 const PrototypePage = () => {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
 
   return (
     <div
-      className="w-full min-h-[100dvh] font-['NeueMontreal'] overflow-x-hidden selection:bg-[#546B41] selection:text-[#FFF8EC]"
+      className="w-full min-h-[100dvh] font-['NeueMontreal'] overflow-x-hidden selection:bg-[#546B41] selection:text-[#FFF8EC] cursor-none"
       style={{ backgroundColor: "#FFF8EC", color: "#2C2C2C" }}
     >
+      {/* Global cursor spotlight */}
+      <CursorSpotlight />
+
       <ProtoSEO />
       <ProtoNavbar onOpenDemo={() => setDemoModalOpen(true)} />
       <main>
@@ -33,7 +36,6 @@ const PrototypePage = () => {
         <ProtoProducts onOpenDemo={() => setDemoModalOpen(true)} />
         <ProtoServices onOpenDemo={() => setDemoModalOpen(true)} />
         <ProtoEnterprise onOpenDemo={() => setDemoModalOpen(true)} />
-        <ProtoRoiCalc onOpenDemo={() => setDemoModalOpen(true)} />
         <ProtoCulture />
       </main>
       <ProtoFooter onOpenDemo={() => setDemoModalOpen(true)} />

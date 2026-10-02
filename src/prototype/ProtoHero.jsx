@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useScroll, useTransform as useScrollTransform } from "framer-motion";
 import { FiArrowRight, FiShield, FiTrendingUp, FiCpu } from "react-icons/fi";
+import { ParallaxBlob } from "./ParallaxUtils";
 
 // 3D tilt card using mouse position
-const TiltCard = ({ children, className }) => {
+const TiltCard = ({ children, className, style }) => {
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -23,7 +24,7 @@ const TiltCard = ({ children, className }) => {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      style={{ rotateX, rotateY, transformPerspective: 900, ...style }}
       className={className}
     >
       {children}
@@ -32,6 +33,10 @@ const TiltCard = ({ children, className }) => {
 };
 
 const ProtoHero = ({ onOpenDemo }) => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const contentY = useScrollTransform(scrollYProgress, [0, 1], [0, -80]);
+
   const metrics = [
     {
       id: "velocity",
@@ -58,19 +63,18 @@ const ProtoHero = ({ onOpenDemo }) => {
 
   return (
     <section
+      ref={sectionRef}
       className="relative min-h-[100dvh] pt-32 md:pt-40 pb-20 flex flex-col justify-between overflow-hidden"
       style={{ backgroundColor: "#FFF8EC" }}
       aria-label="Hero"
     >
-      {/* Soft background glow */}
-      <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] blur-[100px] rounded-full pointer-events-none opacity-30"
-        style={{ backgroundColor: "#DCCCAC" }}
-      />
-      
-      {/* Subtle organic pattern (optional, just leaving empty for clean space) */}
+      {/* Parallax background blobs */}
+      <ParallaxBlob color="#99AD7A" size={500} top="-100px" left="-100px" speed={0.2} opacity={0.13} blur={90} shape="organic" />
+      <ParallaxBlob color="#DCCCAC" size={400} top="10%" right="-80px" speed={0.35} opacity={0.25} blur={80} shape="oval" rotate={30} />
+      <ParallaxBlob color="#546B41" size={300} bottom="5%" left="30%" speed={0.15} opacity={0.08} blur={70} shape="circle" />
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-10 w-full z-10">
+      {/* Main content — moves slightly on scroll for depth */}
+      <motion.div style={{ y: contentY }} className="relative max-w-7xl mx-auto px-6 md:px-10 w-full z-10">
         {/* Status badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -80,7 +84,7 @@ const ProtoHero = ({ onOpenDemo }) => {
           style={{ borderColor: "#DCCCAC", color: "#546B41", backgroundColor: "rgba(255,248,236,0.5)" }}
         >
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: "#99AD7A" }} />
-          <span>VeloSynq 2.0 — Intelligent Automation & Engineering</span>
+          <span>VeloSynq 2.0 — Engineering & Automation Platform</span>
         </motion.div>
 
         <div className="max-w-4xl">
@@ -140,36 +144,44 @@ const ProtoHero = ({ onOpenDemo }) => {
             className="flex-1 max-w-xl"
           >
             <p className="font-['NeueMontreal'] text-lg md:text-xl leading-relaxed mb-8 border-l-2 pl-6" style={{ color: "#2C2C2C", borderColor: "#DCCCAC", opacity: 0.8 }}>
-              A hybrid solution combining ready-made enterprise SaaS tools with dedicated engineering squads. Replace fragmented stacks, cut software licensing costs by 85%, and scale faster with one unified platform.
+              A hybrid solution combining ready-made enterprise SaaS tools with dedicated engineering squads.
+              Replace fragmented stacks and scale faster with one unified platform.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <button
+              <motion.button
                 onClick={onOpenDemo}
-                className="flex items-center gap-3 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-300 hover:opacity-90 hover:-translate-y-1 shadow-md"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-3 px-7 py-3.5 rounded-full text-sm font-semibold shadow-md"
                 style={{ backgroundColor: "#546B41", color: "#FFF8EC" }}
               >
                 <span>Book Architecture Demo</span>
                 <FiArrowRight className="text-lg" />
-              </button>
-              <a
+              </motion.button>
+              <motion.a
                 href="#flywheel"
-                className="px-6 py-3.5 rounded-full border text-sm font-semibold transition-all duration-300 hover:bg-white"
+                whileHover={{ scale: 1.02 }}
+                className="px-6 py-3.5 rounded-full border text-sm font-semibold"
                 style={{ borderColor: "#DCCCAC", color: "#546B41" }}
               >
                 Explore Dual Engine
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         </div>
 
-        {/* 3D tilt metric cards */}
+        {/* 3D tilt metric cards with staggered scroll-triggered entrance */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20" style={{ perspective: "1000px" }}>
           {metrics.map((m, i) => (
-            <TiltCard key={m.id} className="p-8 rounded-3xl border shadow-sm transition-shadow hover:shadow-lg bg-white" style={{ borderColor: "#DCCCAC" }}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 + i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <TiltCard
+                className="p-8 rounded-3xl border shadow-sm bg-white h-full"
+                style={{ borderColor: "#DCCCAC" }}
               >
                 <div className="flex items-center justify-between mb-8">
                   <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#99AD7A" }}>
@@ -184,11 +196,11 @@ const ProtoHero = ({ onOpenDemo }) => {
                 </span>
                 <h3 className="font-semibold text-lg mb-1" style={{ color: "#2C2C2C" }}>{m.title}</h3>
                 <p className="text-sm" style={{ color: "#546B41", opacity: 0.8 }}>{m.sub}</p>
-              </motion.div>
-            </TiltCard>
+              </TiltCard>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
