@@ -1,30 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 
 /**
- * Custom cursor — a clean minimal dot that morphs on hover.
- * Reverts to native system cursor on interactive elements (buttons, links, inputs).
+ * Custom cursor — stays visible at all times.
+ * Grows slightly when hovering interactive elements to indicate clickability.
  */
 const CursorSpotlight = () => {
   const cursorRef = useRef(null);
   const pos = useRef({ x: -100, y: -100 });
   const current = useRef({ x: -100, y: -100 });
   const rafRef = useRef(null);
+  const [hovering, setHovering] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [hovering, setHovering] = useState(false); // hovering over interactive element
 
   useEffect(() => {
     const INTERACTIVE = "a, button, input, select, textarea, label, [role='button'], [tabindex]";
 
     const onMove = (e) => {
       pos.current = { x: e.clientX, y: e.clientY };
-
-      // Check if hovering over an interactive element
       const el = document.elementFromPoint(e.clientX, e.clientY);
-      if (el && el.closest(INTERACTIVE)) {
-        setHovering(true);
-      } else {
-        setHovering(false);
-      }
+      setHovering(!!(el && el.closest(INTERACTIVE)));
     };
 
     const onLeave = () => setHidden(true);
@@ -35,7 +29,6 @@ const CursorSpotlight = () => {
     document.addEventListener("mouseenter", onEnter);
 
     const animate = () => {
-      // Smooth lerp — 0.35 = fast & responsive but not instant
       current.current.x += (pos.current.x - current.current.x) * 0.35;
       current.current.y += (pos.current.y - current.current.y) * 0.35;
 
@@ -56,22 +49,21 @@ const CursorSpotlight = () => {
     };
   }, []);
 
-  // When hovering interactive elements, hide our custom cursor entirely
-  // (browser native cursor-pointer takes over via CSS on those elements)
-  if (hidden || hovering) return null;
-
   return (
     <div
       ref={cursorRef}
       className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
       style={{
-        width: 10,
-        height: 10,
+        width: hovering ? 22 : 10,
+        height: hovering ? 22 : 10,
         borderRadius: "50%",
-        backgroundColor: "#546B41",
-        // Subtle glow halo around the dot
-        boxShadow: "0 0 0 6px rgba(84, 107, 65, 0.12), 0 0 0 12px rgba(84, 107, 65, 0.05)",
-        transition: "box-shadow 0.2s ease",
+        backgroundColor: hovering ? "transparent" : "#546B41",
+        border: hovering ? "2px solid #546B41" : "none",
+        opacity: hidden ? 0 : 1,
+        transition: "width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border 0.15s ease, opacity 0.2s ease",
+        boxShadow: hovering
+          ? "0 0 0 4px rgba(84,107,65,0.1)"
+          : "0 0 0 5px rgba(84,107,65,0.12), 0 0 0 10px rgba(84,107,65,0.05)",
       }}
     />
   );
