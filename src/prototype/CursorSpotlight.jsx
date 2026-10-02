@@ -1,77 +1,79 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
- * Cursor spotlight — small, highly visible sage green dot
- * with a tight radial glow that closely tracks the cursor.
+ * Custom cursor — a clean minimal dot that morphs on hover.
+ * Reverts to native system cursor on interactive elements (buttons, links, inputs).
  */
 const CursorSpotlight = () => {
-  const dotRef = useRef(null);
-  const ringRef = useRef(null);
-  const pos = useRef({ x: -200, y: -200 });
-  const currentDot = useRef({ x: -200, y: -200 });
-  const currentRing = useRef({ x: -200, y: -200 });
+  const cursorRef = useRef(null);
+  const pos = useRef({ x: -100, y: -100 });
+  const current = useRef({ x: -100, y: -100 });
   const rafRef = useRef(null);
+  const [hidden, setHidden] = useState(false);
+  const [hovering, setHovering] = useState(false); // hovering over interactive element
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const INTERACTIVE = "a, button, input, select, textarea, label, [role='button'], [tabindex]";
+
+    const onMove = (e) => {
       pos.current = { x: e.clientX, y: e.clientY };
+
+      // Check if hovering over an interactive element
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el && el.closest(INTERACTIVE)) {
+        setHovering(true);
+      } else {
+        setHovering(false);
+      }
     };
 
+    const onLeave = () => setHidden(true);
+    const onEnter = () => setHidden(false);
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+    document.addEventListener("mouseenter", onEnter);
+
     const animate = () => {
-      // Dot tracks cursor almost instantly (0.4 lerp = tight follow)
-      currentDot.current.x += (pos.current.x - currentDot.current.x) * 0.4;
-      currentDot.current.y += (pos.current.y - currentDot.current.y) * 0.4;
+      // Smooth lerp — adjust 0.14 for more/less lag
+      current.current.x += (pos.current.x - current.current.x) * 0.14;
+      current.current.y += (pos.current.y - current.current.y) * 0.14;
 
-      // Ring lags slightly behind (0.12 lerp = trailing feel)
-      currentRing.current.x += (pos.current.x - currentRing.current.x) * 0.12;
-      currentRing.current.y += (pos.current.y - currentRing.current.y) * 0.12;
-
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${currentDot.current.x - 6}px, ${currentDot.current.y - 6}px)`;
-      }
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${currentRing.current.x - 20}px, ${currentRing.current.y - 20}px)`;
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${current.current.x}px, ${current.current.y}px) translate(-50%, -50%)`;
       }
 
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("mouseenter", onEnter);
+      cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
+  // When hovering interactive elements, hide our custom cursor entirely
+  // (browser native cursor-pointer takes over via CSS on those elements)
+  if (hidden || hovering) return null;
+
   return (
-    <>
-      {/* Inner dot — solid, sharp, always visible */}
-      <div
-        ref={dotRef}
-        className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform rounded-full"
-        style={{
-          width: 12,
-          height: 12,
-          backgroundColor: "#546B41",
-          opacity: 0.9,
-          mixBlendMode: "normal",
-        }}
-      />
-      {/* Outer ring — slightly larger, trails behind the dot */}
-      <div
-        ref={ringRef}
-        className="pointer-events-none fixed top-0 left-0 z-[9998] will-change-transform rounded-full"
-        style={{
-          width: 40,
-          height: 40,
-          border: "1.5px solid #546B41",
-          opacity: 0.5,
-          mixBlendMode: "normal",
-        }}
-      />
-    </>
+    <div
+      ref={cursorRef}
+      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
+      style={{
+        width: 10,
+        height: 10,
+        borderRadius: "50%",
+        backgroundColor: "#546B41",
+        // Subtle glow halo around the dot
+        boxShadow: "0 0 0 6px rgba(84, 107, 65, 0.12), 0 0 0 12px rgba(84, 107, 65, 0.05)",
+        transition: "box-shadow 0.2s ease",
+      }}
+    />
   );
 };
 

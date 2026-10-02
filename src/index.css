@@ -40,3 +40,21 @@
     z-index: 1 !important;
     position: relative !important;
 }
+
+/* ── VeloSynq Prototype custom cursor ───────────────────────── */
+/* Hide native cursor everywhere inside the prototype wrapper */
+.proto-cursor-wrap,
+.proto-cursor-wrap * {
+  cursor: none !important;
+}
+/* Restore native pointer cursor on interactive elements */
+.proto-cursor-wrap a,
+.proto-cursor-wrap button,
+.proto-cursor-wrap input,
+.proto-cursor-wrap select,
+.proto-cursor-wrap textarea,
+.proto-cursor-wrap label,
+.proto-cursor-wrap [role="button"],
+.proto-cursor-wrap [tabindex] {
+  cursor: pointer !important;
+}

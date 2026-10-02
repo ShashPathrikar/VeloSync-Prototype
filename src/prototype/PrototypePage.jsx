@@ -19,7 +19,7 @@ const PrototypePage = () => {
 
   return (
     <div
-      className="w-full min-h-[100dvh] font-['NeueMontreal'] overflow-x-hidden selection:bg-[#546B41] selection:text-[#FFF8EC] cursor-none"
+      className="proto-cursor-wrap w-full min-h-[100dvh] font-['NeueMontreal'] overflow-x-hidden selection:bg-[#546B41] selection:text-[#FFF8EC]"
       style={{ backgroundColor: "#FFF8EC", color: "#2C2C2C" }}
     >
       {/* Global cursor spotlight */}
