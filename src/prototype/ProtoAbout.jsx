@@ -13,8 +13,8 @@ const ProtoAbout = ({ onOpenDemo }) => {
 
   return (
     <section id="about" className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: "#FFF8EC" }}>
-      <ParallaxBlob color="#546B41" size={350} top="0" right="-60px" speed={0.3} opacity={0.08} blur={80} shape="organic" />
-      <ParallaxBlob color="#99AD7A" size={280} bottom="-60px" left="-40px" speed={0.2} opacity={0.12} blur={70} shape="oval" />
+      <ParallaxBlob color="#546B41" size={350} top="0" right="-60px" factor={0.25} opacity={0.08} blur={80} shape="organic" />
+      <ParallaxBlob color="#99AD7A" size={280} bottom="-60px" left="-40px" factor={0.18} opacity={0.12} blur={70} shape="oval" />
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10">
         <div className="mb-8 flex items-center gap-3">
           <div className="w-6 h-px" style={{ backgroundColor: "#546B41" }} />

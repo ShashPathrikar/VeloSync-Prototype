@@ -1,55 +1,47 @@
 import React, { useRef, useEffect, useState } from "react";
 
 /**
- * ParallaxLayer — wraps children and applies a vertical parallax offset
- * based on scroll position. speed < 1 = slower than scroll (background).
- * speed > 1 = faster than scroll (foreground). speed = 0 = fixed.
- */
-export const ParallaxLayer = ({ children, speed = 0.3, className = "", style = {} }) => {
-  const ref = useRef(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-      const rect = ref.current.parentElement?.getBoundingClientRect();
-      const scrolled = window.scrollY;
-      setOffset(scrolled * speed * -1);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [speed]);
-
-  return (
-    <div
-      ref={ref}
-      className={`will-change-transform ${className}`}
-      style={{ transform: `translateY(${offset}px)`, ...style }}
-    >
-      {children}
-    </div>
-  );
-};
-
-/**
- * ParallaxBlob — a decorative abstract blob shape with parallax movement.
- * Used as background ambient decoration across sections.
+ * ParallaxBlob — decorative background shape that moves SLOWER than scroll.
+ *
+ * How it works:
+ * The blob is `absolute` inside its section. As the user scrolls, the section
+ * moves up at 1:1 scroll speed. We apply `translateY(scrollY * factor)` to
+ * push the blob *down* as the user scrolls down, which makes it appear to
+ * travel upward more slowly than the rest of the content.
+ *
+ * `factor` controls the parallax strength:
+ *   0   = blob doesn't move at all (fully stuck to page, like `position:fixed`)
+ *   0.3 = blob moves at 30% of scroll speed (slow background effect)
+ *   0.7 = blob moves at 70% of scroll speed (subtle effect)
+ *   1   = same as normal scroll (no parallax)
  */
 export const ParallaxBlob = ({
   color = "#99AD7A",
-  opacity = 0.12,
+  opacity = 0.14,
   size = 400,
   top,
   left,
   right,
   bottom,
-  speed = 0.25,
+  factor = 0.3,      // how much it moves WITH scroll (lower = slower = more parallax)
   blur = 80,
   rotate = 0,
-  shape = "circle", // "circle" | "oval" | "organic"
+  shape = "circle",
 }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current) return;
+      const y = window.scrollY * factor;
+      ref.current.style.transform = `translateY(${y}px) rotate(${rotate}deg)`;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // set initial position
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [factor, rotate]);
+
   const borderRadius = {
     circle: "50%",
     oval: "60% 40% 60% 40% / 50% 60% 40% 50%",
@@ -57,12 +49,12 @@ export const ParallaxBlob = ({
   }[shape] || "50%";
 
   return (
-    <ParallaxLayer
-      speed={speed}
-      className="absolute pointer-events-none"
+    <div
+      className="absolute pointer-events-none will-change-transform"
       style={{ top, left, right, bottom, zIndex: 0 }}
     >
       <div
+        ref={ref}
         style={{
           width: size,
           height: size,
@@ -73,8 +65,8 @@ export const ParallaxBlob = ({
           transform: `rotate(${rotate}deg)`,
         }}
       />
-    </ParallaxLayer>
+    </div>
   );
 };
 
-export default ParallaxLayer;
+export default ParallaxBlob;

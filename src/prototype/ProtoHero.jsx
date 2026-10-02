@@ -69,9 +69,9 @@ const ProtoHero = ({ onOpenDemo }) => {
       aria-label="Hero"
     >
       {/* Parallax background blobs */}
-      <ParallaxBlob color="#99AD7A" size={500} top="-100px" left="-100px" speed={0.2} opacity={0.13} blur={90} shape="organic" />
-      <ParallaxBlob color="#DCCCAC" size={400} top="10%" right="-80px" speed={0.35} opacity={0.25} blur={80} shape="oval" rotate={30} />
-      <ParallaxBlob color="#546B41" size={300} bottom="5%" left="30%" speed={0.15} opacity={0.08} blur={70} shape="circle" />
+      <ParallaxBlob color="#99AD7A" size={500} top="-100px" left="-100px" factor={0.2} opacity={0.13} blur={90} shape="organic" />
+      <ParallaxBlob color="#DCCCAC" size={400} top="10%" right="-80px" factor={0.35} opacity={0.25} blur={80} shape="oval" rotate={30} />
+      <ParallaxBlob color="#546B41" size={300} bottom="5%" left="30%" factor={0.15} opacity={0.08} blur={70} shape="circle" />
 
       {/* Main content — moves slightly on scroll for depth */}
       <motion.div style={{ y: contentY }} className="relative max-w-7xl mx-auto px-6 md:px-10 w-full z-10">

@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from "react";
 
 /**
- * Global cursor spotlight effect — soft sage green glow that follows the cursor.
- * Renders a single fixed div that tracks mouse position via CSS custom properties.
+ * Cursor spotlight — small, highly visible sage green dot
+ * with a tight radial glow that closely tracks the cursor.
  */
 const CursorSpotlight = () => {
-  const spotRef = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
   const pos = useRef({ x: -200, y: -200 });
-  const current = useRef({ x: -200, y: -200 });
+  const currentDot = useRef({ x: -200, y: -200 });
+  const currentRing = useRef({ x: -200, y: -200 });
   const rafRef = useRef(null);
 
   useEffect(() => {
@@ -16,13 +18,21 @@ const CursorSpotlight = () => {
     };
 
     const animate = () => {
-      // Lerp toward actual cursor position for smooth lag
-      current.current.x += (pos.current.x - current.current.x) * 0.1;
-      current.current.y += (pos.current.y - current.current.y) * 0.1;
+      // Dot tracks cursor almost instantly (0.4 lerp = tight follow)
+      currentDot.current.x += (pos.current.x - currentDot.current.x) * 0.4;
+      currentDot.current.y += (pos.current.y - currentDot.current.y) * 0.4;
 
-      if (spotRef.current) {
-        spotRef.current.style.transform = `translate(${current.current.x - 200}px, ${current.current.y - 200}px)`;
+      // Ring lags slightly behind (0.12 lerp = trailing feel)
+      currentRing.current.x += (pos.current.x - currentRing.current.x) * 0.12;
+      currentRing.current.y += (pos.current.y - currentRing.current.y) * 0.12;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${currentDot.current.x - 6}px, ${currentDot.current.y - 6}px)`;
       }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate(${currentRing.current.x - 20}px, ${currentRing.current.y - 20}px)`;
+      }
+
       rafRef.current = requestAnimationFrame(animate);
     };
 
@@ -36,18 +46,32 @@ const CursorSpotlight = () => {
   }, []);
 
   return (
-    <div
-      ref={spotRef}
-      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
-      style={{
-        width: 400,
-        height: 400,
-        borderRadius: "50%",
-        background:
-          "radial-gradient(circle, rgba(153, 173, 122, 0.18) 0%, rgba(84, 107, 65, 0.08) 50%, transparent 70%)",
-        mixBlendMode: "multiply",
-      }}
-    />
+    <>
+      {/* Inner dot — solid, sharp, always visible */}
+      <div
+        ref={dotRef}
+        className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform rounded-full"
+        style={{
+          width: 12,
+          height: 12,
+          backgroundColor: "#546B41",
+          opacity: 0.9,
+          mixBlendMode: "normal",
+        }}
+      />
+      {/* Outer ring — slightly larger, trails behind the dot */}
+      <div
+        ref={ringRef}
+        className="pointer-events-none fixed top-0 left-0 z-[9998] will-change-transform rounded-full"
+        style={{
+          width: 40,
+          height: 40,
+          border: "1.5px solid #546B41",
+          opacity: 0.5,
+          mixBlendMode: "normal",
+        }}
+      />
+    </>
   );
 };
 
