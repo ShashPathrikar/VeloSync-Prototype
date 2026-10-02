@@ -35,9 +35,9 @@ const CursorSpotlight = () => {
     document.addEventListener("mouseenter", onEnter);
 
     const animate = () => {
-      // Smooth lerp — adjust 0.14 for more/less lag
-      current.current.x += (pos.current.x - current.current.x) * 0.14;
-      current.current.y += (pos.current.y - current.current.y) * 0.14;
+      // Smooth lerp — 0.35 = fast & responsive but not instant
+      current.current.x += (pos.current.x - current.current.x) * 0.35;
+      current.current.y += (pos.current.y - current.current.y) * 0.35;
 
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate(${current.current.x}px, ${current.current.y}px) translate(-50%, -50%)`;

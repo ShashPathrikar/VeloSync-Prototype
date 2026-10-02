@@ -58,3 +58,6 @@
 .proto-cursor-wrap [tabindex] {
   cursor: pointer !important;
 }
+/* ── Hide scrollbar inside prototype ────────────────────────── */
+.proto-cursor-wrap { scrollbar-width: none; -ms-overflow-style: none; }
+.proto-cursor-wrap::-webkit-scrollbar { display: none; }
