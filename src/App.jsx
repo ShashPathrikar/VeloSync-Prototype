@@ -18,6 +18,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 import 'locomotive-scroll/locomotive-scroll.css';
 import { ContentProvider } from './context/ContentContext'
 import AdminPage from './pages/AdminPage'
+import PrototypePage from './prototype/PrototypePage'
 
 const HomePage = () => {
   const location = useLocation();
@@ -71,6 +72,8 @@ const AppRoutes = () => {
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/hidden/admin" element={<AdminPage />} />
+        <Route path="/prototype" element={<PrototypePage />} />
+        <Route path="/v2" element={<PrototypePage />} />
       </Routes>
     </NavTransition>
   )
